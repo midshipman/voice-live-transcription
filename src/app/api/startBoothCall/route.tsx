@@ -26,8 +26,8 @@ export async function POST(req: NextRequest, _res: NextResponse) {
 
   // Create Tasks that show up on the call page
   const tasks: { [key: string]: any } = {};
-  tasks["Order a Pair of Shoes"] = false;
-  tasks["Change the address or Shoe Size on your Order"] = false;
+  // tasks["Order a Pair of Shoes"] = false;
+  // tasks["Change the address or Shoe Size on your Order"] = false;
 
   // Create a new Sync Map Item with the participant's info
   const itemData = {
