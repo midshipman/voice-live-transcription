@@ -50,7 +50,7 @@ async function handleTwiml(req: NextRequest) {
     });
 
     // 开场欢迎语，优先取 Sync Map，否则使用 fallback
-    const openingMessage = `Hello ${callInfo?.participant?.firstName || fallbackFirstName}, My name is Jeff and I work for Owl Shoes. Are you looking for some new shoes or do you have something else you need?`;
+    const openingMessage = `Hello ${callInfo?.participant?.firstName || fallbackFirstName}, This is hoot and drive, can I talk with you about your dream car?`;
 
     const connect = response.connect({});
     const assistant = connect.assistant({

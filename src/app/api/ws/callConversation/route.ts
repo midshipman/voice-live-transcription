@@ -106,7 +106,7 @@ async function startMessage(scenario: string, name: string) {
 
   switch (scenario) {
     case 'retail':
-    return `Hello ${name || ''}, My name is Jeff and I work for Owl Shoes. Are you looking for some new shoes or do you have something else you need?`;
+    return `Hello ${name || ''}, This is hoot and drive, can I talk with you about your dream car?`;
     break;
     case 'estates':
     return `Hello ${name || ''}, My name is Jeff and I work for Owl Estates. Are you looking to buy or rent a property today?`;
