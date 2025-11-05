@@ -50,7 +50,7 @@ const AIChat: React.FC<AIChatProps> = ({}) => {
     },
   );
 
-  // Run when the connection state (readyState) changes
+  // 当连接打开时，拉取历史（首次）
   useEffect(() => {
     if (readyState === ReadyState.OPEN) {
       sendJsonMessage({
@@ -60,6 +60,15 @@ const AIChat: React.FC<AIChatProps> = ({}) => {
     }
   }, [readyState]);
 
+  // 当 code 变化且连接已打开时，重新拉取历史，确保使用最新的 sessionId
+  useEffect(() => {
+    if (readyState === ReadyState.OPEN && code) {
+      sendJsonMessage({
+        event: "pollHistory",
+        sessionId: code,
+      });
+    }
+  }, [code, readyState]);
   const [conversationHistory, setConversationHistory] = useState<any[]>([]);
   enum CallStatus {
     Ongoing = "ongoing",

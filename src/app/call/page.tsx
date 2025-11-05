@@ -5,13 +5,17 @@ import { Box } from "@twilio-paste/core";
 
 import { Heading } from "@twilio-paste/core";
 import { ProductSegmentIcon } from "@twilio-paste/icons/cjs/ProductSegmentIcon";
+import { CallIcon } from "@twilio-paste/icons/cjs/CallIcon";
 import type { NextPage } from "next";
 import Link from "next/link";
 
 import Tasks from "./tasks";
 import AIChat from "./aiChat";
-import Profile from "./profile";
-import { Suspense } from "react";
+// import Profile from "./profile";
+import { Suspense, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+// 补充 Text 组件用于展示静态资料
+import { Text } from "@twilio-paste/core";
 
 const Call: NextPage = () => {
   return (
@@ -30,14 +34,21 @@ const Call: NextPage = () => {
         >
           <Heading as="h2" variant="heading20">
             Customer Profile
-            <Badge as="span" variant="brand30">
+            {/* 如果不想显示 Segment 的标识，可以移除下面的 Badge */}
+            {/* <Badge as="span" variant="brand30">
               <ProductSegmentIcon decorative />
               Powered by Segment
-            </Badge>
+            </Badge> */}
           </Heading>
-          <Suspense>
-            <Profile />
-          </Suspense>
+          {/* 静态展示客户信息，而非从 Segment 拉取 */}
+          <Box marginTop="space40">
+            <Text as="p" fontSize="fontSize60" fontWeight="fontWeightMedium">
+              Name: John
+            </Text>
+            <Text as="p" fontSize="fontSize60" fontWeight="fontWeightMedium">
+              Phone: +4917673552924
+            </Text>
+          </Box>
         </Box>
         <Suspense>
           <Tasks />

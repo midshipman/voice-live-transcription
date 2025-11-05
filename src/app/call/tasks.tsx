@@ -4,12 +4,15 @@ import { useState, useEffect, useCallback, Suspense } from "react";
 import { SyncClient, SyncMap } from "twilio-sync";
 import { motion } from "motion/react";
 
-import { Box, Stack, Heading, Text, SkeletonLoader } from "@twilio-paste/core";
+import { Box, Stack, Heading, Text, SkeletonLoader, Button } from "@twilio-paste/core";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const Tasks: React.FC = () => {
   const [syncToken, setSyncToken] = useState<string | null>(null);
   const [syncClient, setSyncClient] = useState<SyncClient | null>(null);
+  const [calling, setCalling] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchSyncToken() {
@@ -54,6 +57,51 @@ const Tasks: React.FC = () => {
     process.env.NEXT_PUBLIC_CALLS_MAP_SID!,
     code ? code : "",
   );
+
+  const startCall = async () => {
+    setCalling(true);
+    try {
+      if (!code) {
+        // 1) 先在 Sync Map 创建会话 code，并立即发起呼叫（服务端会返回 code）
+        const res = await fetch("/api/startBoothCall", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            participant: {
+              firstName: "John",
+              email: "john@example.com",
+              number: "+4917673552924",
+            },
+          }),
+        });
+        if (!res.ok) {
+          const msg = await res.text();
+          throw new Error(msg || "Failed to create code and start call");
+        }
+        const data = await res.json();
+        if (data?.code) {
+          // 更新 URL，使后续 websocket 与 Sync Map 使用正确的 sessionId（code）
+          router.replace(`/call?code=${data.code}`);
+        }
+      } else {
+        // 2) 已有 code，直接用该 code 发起呼叫（必要时覆盖号码/场景）
+        const res = await fetch("/api/startCodeCall", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code, to: "+4917673552924", scenario: "retail" }),
+        });
+        if (!res.ok) {
+          const msg = await res.text();
+          throw new Error(msg || "Failed to start call");
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setCalling(false);
+    }
+  };
+
   return (
     <>
       <Box
@@ -82,7 +130,7 @@ const Tasks: React.FC = () => {
                 <SkeletonLoader />
               ) : (
                 <>
-                  {" "}
+                  {/* 原有任务列表 */}
                   {Object.keys(activeCall.tasks)
                     .reverse()
                     .map((task, index) => (
@@ -113,6 +161,21 @@ const Tasks: React.FC = () => {
                         </div>
                       </motion.label>
                     ))}
+                  {/* 新增：操作按钮区域 */}
+                  <Box display="flex" columnGap="space40" marginTop="space60">
+                    <Button
+                      variant="primary"
+                      onClick={() => {
+                        console.log("RCS button clicked");
+                        // TODO: 在此触发 RCS 相关逻辑或 API
+                      }}
+                    >
+                      RCS
+                    </Button>
+                    <Button variant="primary" onClick={startCall} disabled={calling}>
+                       {calling ? "Calling..." : "Call"}
+                     </Button>
+                  </Box>
                 </>
               )}
             </Stack>
@@ -137,8 +200,9 @@ function useSyncMap(
   });
 
   useEffect(() => {
+    // 当 sessionId 变化时，重置资源以重新订阅新的 key
     setResource(undefined);
-  }, [syncClient]);
+  }, [syncClient, sessionId]);
 
   useEffect(() => {
     (async () => {
@@ -173,7 +237,7 @@ function useSyncMap(
     return () => {
       syncResource && syncResource.close();
     };
-  }, [syncClient, syncResource, name]);
+  }, [syncClient, syncResource, name, sessionId]);
 
   const setData = useCallback(
     async (key: string, value: any) => {
