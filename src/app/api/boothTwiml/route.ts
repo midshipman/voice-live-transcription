@@ -13,8 +13,8 @@ async function handleTwiml(req: NextRequest) {
     const assistantId = (url.searchParams.get("assistant") || "") as string;
     let code = (url.searchParams.get("code") || "") as string;
     const scenario = (url.searchParams.get("scenario") || "retail") as string;
-    const fallbackFirstName = url.searchParams.get("firstName") || "John";
-    const fallbackEmail = url.searchParams.get("email") || "john@example.com";
+    const fallbackFirstName = url.searchParams.get("firstName") || "curtis";
+    const fallbackEmail = url.searchParams.get("email") || "curtis@example.com";
 
     // 兜底处理 code，避免 Sync API 报错
     if (!code || code.trim().length === 0) {

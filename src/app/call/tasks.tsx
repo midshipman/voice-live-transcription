@@ -68,8 +68,8 @@ const Tasks: React.FC = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             participant: {
-              firstName: "John",
-              email: "john@example.com",
+              firstName: "curtis",
+              email: "curtis@example.com",
               number: "+4917673552924",
             },
           }),

@@ -43,7 +43,7 @@ const Call: NextPage = () => {
           {/* 静态展示客户信息，而非从 Segment 拉取 */}
           <Box marginTop="space40">
             <Text as="p" fontSize="fontSize60" fontWeight="fontWeightMedium">
-              Name: John
+              Name: Curtis
             </Text>
             <Text as="p" fontSize="fontSize60" fontWeight="fontWeightMedium">
               Phone: +4917673552924
@@ -74,11 +74,7 @@ const Call: NextPage = () => {
           <AIChat />
         </Suspense>
       </Box>
-      <Box margin="space40">
-        <Link href="/">
-          <Button variant="destructive">Back to Home</Button>
-        </Link>
-      </Box>
+      
     </Box>
   );
 };

@@ -38,7 +38,7 @@ export function SOCKET(
               if (ch.length < newCh.length) {
                 send({ event: 'history', data: newCh.slice(ch.length) })
                 ch = newCh;
-                pollDelay = 2000
+                pollDelay = 300
               } else if (!isEqual(ch.slice(-1)[0], newCh.slice(-1)[0])) {
                 for (var i = 0, len = ch.length; i < len; i++) {
                   const duplicateIndex = newCh.findIndex(x => x.id === ch[i]?.id);
@@ -48,9 +48,9 @@ export function SOCKET(
                 }
                 ch = newCh;
                 send({ event: 'history', data: newCh })
-                pollDelay = 2000
+                pollDelay = 300
               } else {
-                pollDelay = pollDelay + 1000
+                pollDelay = pollDelay + 100
               }
               if (callOngoing && pollDelay <= 10000) {
                 setTimeout(pollMessageHistory, pollDelay)

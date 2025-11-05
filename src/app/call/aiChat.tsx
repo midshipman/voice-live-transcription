@@ -18,8 +18,6 @@ import {
   ChatBookend,
   ChatBookendItem,
   Button,
-  Spinner,
-  AlertDialog,
 } from "@twilio-paste/core";
 import { ProductAIAssistantsIcon } from "@twilio-paste/icons/cjs/ProductAIAssistantsIcon";
 
@@ -188,7 +186,7 @@ const AIChat: React.FC<AIChatProps> = ({}) => {
                                   avatarIcon={ProductAIAssistantsIcon}
                                   aria-label="AI said"
                                 >
-                                  Jeff
+                                  Hoot
                                 </AIChatMessageAuthor>
                                 <AIChatMessageBody animated>
                                   {message.content.content}
@@ -218,7 +216,7 @@ const AIChat: React.FC<AIChatProps> = ({}) => {
                                     avatarIcon={ProductAIAssistantsIcon}
                                     aria-label="AI said"
                                   >
-                                    Jeff
+                                    Hoot
                                   </AIChatMessageAuthor>
                                   <AIChatMessageBody animated>
                                     {message.content.output
@@ -261,15 +259,6 @@ const AIChat: React.FC<AIChatProps> = ({}) => {
                 </motion.div>
               )}
             </AnimatePresence>
-            {callStatus === CallStatus.Ringing && (
-              <Box display="flex" justifyContent="center" alignItems="center">
-                <Spinner
-                  decorative={false}
-                  title="loading"
-                  size="sizeIcon100"
-                />
-              </Box>
-            )}
             {(callStatus === CallStatus.Ended || viSid) && (
               <ChatBookend>
                 <ChatBookendItem>Today</ChatBookendItem>
@@ -298,9 +287,6 @@ const AIChat: React.FC<AIChatProps> = ({}) => {
                 </AnimatePresence>
               </>
             )}
-            {(callStatus === CallStatus.Ended || viSid) && (
-              <InactivityAlert timeout={10000} />
-            )}
           </ChatLog>
         </AIChatLog>
       </Suspense>
@@ -310,81 +296,4 @@ const AIChat: React.FC<AIChatProps> = ({}) => {
 
 export default AIChat;
 
-const InactivityAlert: React.FC<{ timeout: number }> = ({ timeout }) => {
-  const router = useRouter();
-  const timer = useRef<ReturnType<typeof setTimeout>>(
-    setTimeout(() => {}, 10000),
-  );
-  const [isOpen, setIsOpen] = useState(false);
-  const [countDown, setCountdown] = useState(10);
-  const handleOpen = () => {
-    setIsOpen(true);
-  };
-  const handleClose = () => {
-    setCountdown(20);
-    clearTimeout(timer.current);
-    setIsOpen(false);
-    timer.current = setTimeout(() => {
-      handleOpen();
-    }, 30000);
-  };
-
-  const handleActivity = () => {
-    clearTimeout(timer.current);
-    timer.current = setTimeout(() => {
-      handleOpen();
-    }, timeout);
-    // resetTimer();
-  };
-
-  useEffect(() => {
-    timer.current = setTimeout(() => {
-      handleOpen();
-    }, timeout);
-    window.addEventListener("mousemove", handleActivity);
-    window.addEventListener("keydown", handleActivity);
-
-    return () => {
-      clearTimeout(timer.current);
-      window.removeEventListener("mousemove", handleActivity);
-      window.removeEventListener("keydown", handleActivity);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (isOpen) {
-      const countdownTimer = setInterval(() => {
-        if (countDown > 0) {
-          setCountdown(countDown - 1);
-        } else {
-          clearInterval(countdownTimer);
-          router.push("/");
-        }
-      }, 1000);
-
-      return () => clearInterval(countdownTimer);
-    }
-  }, [isOpen, countDown]);
-
-  return (
-    <AlertDialog
-      heading="Have you finished?"
-      isOpen={isOpen}
-      onConfirm={() => router.push("/")}
-      onConfirmLabel="Next Person Press Here"
-      onDismiss={handleClose}
-      onDismissLabel="I'm not done"
-    >
-      <center>
-        <motion.p
-          style={{ textAlign: "center" }}
-          initial={{ scale: 0 }}
-          animate={{ scale: [0, 1.2, 1] }}
-          key={countDown}
-        >
-          {countDown}
-        </motion.p>
-      </center>
-    </AlertDialog>
-  );
-};
+// 移除 InactivityAlert 组件定义和相关导入 Spinner、AlertDialog

@@ -70,12 +70,12 @@ const StartForm: React.FC = () => {
                 onClick={() => {
                   (
                     document.getElementById("firstName") as HTMLInputElement
-                  ).value = "John";
+                  ).value = "curtis";
                   (
                     document.getElementById("lastName") as HTMLInputElement
-                  ).value = "Doe";
+                  ).value = "Twilio";
                   (document.getElementById("email") as HTMLInputElement).value =
-                    "john.doe@example.com";
+                    "curtis@example.com";
                 }}
               >
                 Use Dummy Data
