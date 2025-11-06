@@ -26,12 +26,14 @@ import ToolMessage from "./toolMessage";
 import WrapUpModal from "./wrapUpModal";
 import { useRouter } from "next/navigation";
 
-interface AIChatProps {}
+interface AIChatProps {
+  forceVIVisible?: boolean;
+}
 
-const AIChat: React.FC<AIChatProps> = ({}) => {
+const AIChat: React.FC<AIChatProps> = ({ forceVIVisible }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [viSid, setViSid] = useState("");
-  const [viVisible, setVIVisible] = useState(false);
+  const [viVisible, setVIVisible] = useState(!!forceVIVisible);
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
 
@@ -67,6 +69,13 @@ const AIChat: React.FC<AIChatProps> = ({}) => {
       });
     }
   }, [code, readyState]);
+  
+  // Sync external control from parent to toggle VI visibility
+  useEffect(() => {
+    if (typeof forceVIVisible === "boolean") {
+      setVIVisible(forceVIVisible);
+    }
+  }, [forceVIVisible]);
   const [conversationHistory, setConversationHistory] = useState<any[]>([]);
   enum CallStatus {
     Ongoing = "ongoing",

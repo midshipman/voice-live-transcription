@@ -1,23 +1,15 @@
 "use client";
 
-import { Badge, Button } from "@twilio-paste/core";
-import { Box } from "@twilio-paste/core";
-
-import { Heading } from "@twilio-paste/core";
-import { ProductSegmentIcon } from "@twilio-paste/icons/cjs/ProductSegmentIcon";
-import { CallIcon } from "@twilio-paste/icons/cjs/CallIcon";
+import { Box, Button, Heading, Text } from "@twilio-paste/core";
 import type { NextPage } from "next";
-import Link from "next/link";
 
 import Tasks from "./tasks";
 import AIChat from "./aiChat";
 // import Profile from "./profile";
 import { Suspense, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
-// 补充 Text 组件用于展示静态资料
-import { Text } from "@twilio-paste/core";
 
 const Call: NextPage = () => {
+  const [showVI, setShowVI] = useState(false);
   return (
     <Box as="main" padding="space70">
       <Box display="flex" alignItems="stretch" zIndex="zIndex10">
@@ -71,10 +63,10 @@ const Call: NextPage = () => {
           }
         `}</style>
         <Suspense>
-          <AIChat />
+          <AIChat forceVIVisible={showVI} />
         </Suspense>
       </Box>
-      
+     
     </Box>
   );
 };
