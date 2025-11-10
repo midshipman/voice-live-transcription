@@ -163,15 +163,6 @@ const Tasks: React.FC = () => {
                     ))}
                   {/* 新增：操作按钮区域 */}
                   <Box display="flex" columnGap="space40" marginTop="space60">
-                    <Button
-                      variant="primary"
-                      onClick={() => {
-                        console.log("RCS button clicked");
-                        // TODO: 在此触发 RCS 相关逻辑或 API
-                      }}
-                    >
-                      RCS
-                    </Button>
                     <Button variant="primary" onClick={startCall} disabled={calling}>
                        {calling ? "Calling..." : "Call"}
                      </Button>

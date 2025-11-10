@@ -10,6 +10,8 @@ import { Suspense, useState } from "react";
 
 const Call: NextPage = () => {
   const [showVI, setShowVI] = useState(false);
+  const customerName = process.env.NEXT_PUBLIC_CUSTOMER_NAME || "Curtis";
+  const customerPhone = process.env.NEXT_PUBLIC_CUSTOMER_PHONE || "+4917673552924";
   return (
     <Box as="main" padding="space70">
       <Box display="flex" alignItems="stretch" zIndex="zIndex10">
@@ -35,10 +37,10 @@ const Call: NextPage = () => {
           {/* 静态展示客户信息，而非从 Segment 拉取 */}
           <Box marginTop="space40">
             <Text as="p" fontSize="fontSize60" fontWeight="fontWeightMedium">
-              Name: Curtis
+              Name: {customerName}
             </Text>
             <Text as="p" fontSize="fontSize60" fontWeight="fontWeightMedium">
-              Phone: +4917673552924
+              Phone: {customerPhone}
             </Text>
           </Box>
         </Box>
