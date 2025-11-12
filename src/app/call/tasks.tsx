@@ -68,9 +68,9 @@ const Tasks: React.FC = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             participant: {
-              firstName: "curtis",
+              firstName: process.env.NEXT_PUBLIC_CUSTOMER_NAME,
               email: "curtis@example.com",
-              number: "+4917673552924",
+              number: process.env.NEXT_PUBLIC_CUSTOMER_PHONE,
             },
           }),
         });
@@ -80,11 +80,11 @@ const Tasks: React.FC = () => {
         }
         const data = await res.json();
         if (data?.code) {
-          // 更新 URL，使后续 websocket 与 Sync Map 使用正确的 sessionId（code）
+          
           router.replace(`/call?code=${data.code}`);
         }
       } else {
-        // 2) 已有 code，直接用该 code 发起呼叫（必要时覆盖号码/场景）
+        
         const res = await fetch("/api/startCodeCall", {
           method: "POST",
           headers: { "Content-Type": "application/json" },

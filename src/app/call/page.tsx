@@ -10,8 +10,8 @@ import { Suspense, useState } from "react";
 
 const Call: NextPage = () => {
   const [showVI, setShowVI] = useState(false);
-  const customerName = process.env.NEXT_PUBLIC_CUSTOMER_NAME || "Curtis";
-  const customerPhone = process.env.NEXT_PUBLIC_CUSTOMER_PHONE || "+4917673552924";
+  const customerName = process.env.NEXT_PUBLIC_CUSTOMER_NAME;
+  const customerPhone = process.env.NEXT_PUBLIC_CUSTOMER_PHONE;
   return (
     <Box as="main" padding="space70">
       <Box display="flex" alignItems="stretch" zIndex="zIndex10">
